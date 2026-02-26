@@ -187,7 +187,8 @@ def info():
 
 
 if __name__ == '__main__':
-    # Check if model exists
+    port = int(os.environ.get('PORT', 5000))
+
     if not os.path.exists(MODEL_PATH):
         print("\n" + "="*70)
         print("⚠️  PRE-TRAINED MODEL NOT FOUND")
@@ -201,12 +202,12 @@ if __name__ == '__main__':
         print("🌐 BLOOD SUGAR PREDICTION WEB APP")
         print("="*70)
         print("\n✓ Model loaded successfully")
-        print("✓ Server starting...")
+        print(f"✓ Server starting on port {port}...")
         print("\n📱 Open your browser and go to:")
-        print("   http://localhost:5000")
+        print(f"   http://localhost:{port}")
         print("\n🔌 API Endpoint:")
-        print("   POST http://localhost:5000/api/predict")
+        print(f"   POST http://localhost:{port}/api/predict")
         print("\nPress CTRL+C to stop the server")
         print("="*70 + "\n")
-        
-        app.run(debug=True, host='0.0.0.0', port=5000)
+
+        app.run(debug=False, host='0.0.0.0', port=port)

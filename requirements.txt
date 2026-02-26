@@ -21,3 +21,6 @@ xlrd>=2.0.0
 # Jupyter Notebook (optional, for interactive analysis)
 jupyter>=1.0.0
 ipykernel>=6.0.0
+
+# Production server
+gunicorn>=20.1.0
