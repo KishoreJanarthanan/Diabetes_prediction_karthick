@@ -145,10 +145,11 @@ def create_pretrained_model():
         print(f"{i:2d}. {feature:25s} {importance:.4f}")
     
     # Create models directory if it doesn't exist
-    os.makedirs('models', exist_ok=True)
-    
+    models_dir = os.path.join(BASE_DIR, 'models')
+    os.makedirs(models_dir, exist_ok=True)
+
     # Save the model
-    model_path = 'models/pretrained_sugar_predictor.pkl'
+    model_path = os.path.join(models_dir, 'pretrained_sugar_predictor.pkl')
     joblib.dump(predictor, model_path)
     
     print("\n" + "="*70)
@@ -191,7 +192,7 @@ def create_pretrained_model():
         }
     }
     
-    feature_info_path = 'models/feature_info.pkl'
+    feature_info_path = os.path.join(models_dir, 'feature_info.pkl')
     joblib.dump(feature_info, feature_info_path)
     print(f"📋 Feature information saved to: {feature_info_path}")
     

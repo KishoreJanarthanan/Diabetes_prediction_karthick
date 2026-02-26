@@ -11,9 +11,20 @@ import os
 
 app = Flask(__name__)
 
-# Load model at startup
-MODEL_PATH = 'models/pretrained_sugar_predictor.pkl'
-FEATURE_INFO_PATH = 'models/feature_info.pkl'
+# Use absolute paths so it works both locally and on Render
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'pretrained_sugar_predictor.pkl')
+FEATURE_INFO_PATH = os.path.join(BASE_DIR, 'models', 'feature_info.pkl')
+
+# Auto-create model if not found (important for Render cold deploys)
+if not os.path.exists(MODEL_PATH):
+    print("⏳ Model not found — building pre-trained model...")
+    try:
+        import subprocess, sys
+        subprocess.run([sys.executable, os.path.join(BASE_DIR, 'create_pretrained_model.py')], check=True)
+        print("✓ Model built successfully!")
+    except Exception as build_err:
+        print(f"✗ Failed to build model: {build_err}")
 
 try:
     model = OptimizedSugarPredictor.load_model(MODEL_PATH)
@@ -21,7 +32,6 @@ try:
     print("✓ Model loaded successfully!")
 except Exception as e:
     print(f"✗ Error loading model: {e}")
-    print("Run 'python create_pretrained_model.py' first")
     model = None
     feature_info = None
 
